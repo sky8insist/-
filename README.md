@@ -1,20 +1,30 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/drive/1ZgPsn4HSEGhkuJfI3CPTZ5VU1lhEx9pj
-
-## Run Locally
-
-**Prerequisites:**  Node.js
+# 基于 Dify 平台搭建，通过其高度灵活的配置能力，实现EXCEL表格的分析处理。用户通过提交待处理的表格，系统便会自动调用大模型完成对内容分析与处理，最终输出一份经过重构与优化的 Excel 表格
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+# 技术架构
+1.输入层：标准化数据接入
+用户通过友好的前端界面，上传符合预设规范的Excel表格文件。系统接收文件后，自动执行格式校验与病毒扫描，确保数据源的合法性与安全性，为后续处理奠定基础。
+
+2.逻辑编排层：智能化任务解析与调度
+将表格数据按行拆解为独立的处理单元，将复杂的批量任务转化为一系列可并行执行的子任务。
+将子任务注入分布式任务队列，实现任务的异步、并发执行与全生命周期管理，从而有效应对高并发与大规模数据处理需求。
+
+3.模型层
+作为系统的智能核心，本层选取了Qwen2.5-32B-Insturct模型负责调用大语言模型完成具体的认知任务，进行精准化AI推理。
+3.1.模型的调度
+灵活调度已接入的云端或本地部署的大语言模型。可以根据企业的具体需求和实际情况，自主选择其支持的各类所支持的模型类型。
+3.2.指令的执行
+为每个子任务构造精准的上下文与结构化提示词，引导模型基于A列内容与B列指令进行推理，并生成规范、准确的C列结果。
+
+4.数据层：结构化结果整合与输出
+负责将AI的文本输出转化为用户可用的结构化数据文件。
+4.1. 数据集成效率与准确性
+汇集所有原子任务的成功结果后，将进一步进行数据清洗与格式标准化，从而确保数据结构的一致性。实验结果表明，在146行到2万行的数据规模范围内，本系统针对测试样例中的分类问题准确率稳定在98.5%以上。同时，对于信息提取、事实查询、情感分析等其他简单任务，其回答正确率均超过99%，并且平均处理效率达到约 2.1 秒/行，充分验证了系统的高可靠性与快速响应能力。
+4.2.结果导出
+将处理完毕的结构化数据无缝写入全新的Excel模板，生成一个保留原始A、B列内容且填充了AI生成C列的完整结果文件，供用户下载。
+
+
+
